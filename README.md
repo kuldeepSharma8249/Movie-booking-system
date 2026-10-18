@@ -1,10 +1,11 @@
 # Movie Booking System
 
-I'm building a Movie Booking System using Java and Spring Boot to improve my backend development skills and learn how real-world applications work.
+I'm building a Movie Booking System using Java and Spring Boot as a way to improve my backend development skills and understand how real-world applications work.
 
-The project will allow users to explore movies, check showtimes, select seats, and book movie tickets.
+The idea is to build a system where users can explore movies, check showtimes, select seats, and book movie tickets. I'm developing it step by step, starting with the basic backend modules.
 
 ## Technologies Used
+
 - Java
 - Spring Boot
 - Spring Data JPA
@@ -13,12 +14,20 @@ The project will allow users to explore movies, check showtimes, select seats, a
 - REST APIs
 
 ## Current Progress
-- Created the Movie entity
-- Implemented the Movie Repository
-- Created the Movie Service
-- Implemented the Movie Controller
 
-I'm currently working on the movie management module. I'll add theaters, shows, booking functionality, and JWT authentication as I continue developing the project.
+So far, I've completed the following parts:
+
+- Created the Movie entity, repository, service, and controller.
+- Created the Theater module.
+
+I'm adding features one by one as I learn more about Spring Boot and backend development.
+
+## What's Next?
+
+- Implement show management.
+- Add movie booking functionality.
+- Work on seat selection and availability.
+- Add JWT authentication and authorization.
 
 ## About Me
 
@@ -26,5 +35,4 @@ I'm currently working on the movie management module. I'll add theaters, shows, 
 
 B.Tech Computer Science and Engineering student at GKV University.
 
-I'm interested in Java backend development and currently learning Spring Boot by building practical projects.
-
+I'm interested in Java backend development and building practical projects to improve my understanding of backend technologies.
