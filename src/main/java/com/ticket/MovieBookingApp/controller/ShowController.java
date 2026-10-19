@@ -24,17 +24,17 @@ public class ShowController {
 
     @GetMapping("/getallshows")
     public ResponseEntity<List<Show>> getAllShows(){
-        return ResponseEntity.ok(showService.getAllShows())
+        return ResponseEntity.ok(showService.getAllShows());
     }
 
-    @GetMapping("/getshowsbymovie")
-    public ResponseEntity<List<Show>> getShowsByMovie(@RequestParam String movie){
-        return ResponseEntity.ok(showService.getShowsByMovie(movie));
+    @GetMapping("/getshowsbymovie/{id}")
+    public ResponseEntity<List<Show>> getShowsByMovie(@PathVariable Long id){
+        return ResponseEntity.ok(showService.getShowsByMovie(id));
     }
 
-    @GetMapping("/getshowsbytheater")
-    public ResponseEntity<List<Show>> getShowsByTheater(@RequestParam String theater){
-        return ResponseEntity.ok(showService.getShowsByTheater(theater));
+    @GetMapping("/getshowsbytheater/{id}")
+    public ResponseEntity<List<Show>> getShowsByTheater(@PathVariable Long id){
+        return ResponseEntity.ok(showService.getShowsByTheater(id));
     }
 
     @PutMapping("/updateshow/{id}")
