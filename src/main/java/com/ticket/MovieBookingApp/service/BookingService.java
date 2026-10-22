@@ -8,7 +8,9 @@ import com.ticket.MovieBookingApp.movieDTO.BookingDTO;
 import com.ticket.MovieBookingApp.repository.BookingRepository;
 import com.ticket.MovieBookingApp.repository.ShowRepository;
 import com.ticket.MovieBookingApp.repository.UserRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -61,8 +63,8 @@ public class BookingService {
         return price*numberOfSeats;
     }
 
-    private void validateDuplicateSeats(Long showid, List<String> seatNumbers) {
-        Show show = showRepository.findById(showid)
+    private void validateDuplicateSeats(Long showId, List<String> seatNumbers) {
+        Show show = showRepository.findById(showId)
                 .orElseThrow(()->new RuntimeException("Show not found"));
         Set<String> occupiedSeats = show.getBookings().stream()
                 .filter(b->b.getBookingStatus()!= BookingStatus.CANCELLED)
@@ -76,13 +78,55 @@ public class BookingService {
         }
     }
 
-    private boolean isSeatsAvailable(Long showid, Integer numberOfSeats) {
-        Show show = showRepository.findById(showid)
+    private boolean isSeatsAvailable(Long showId, Integer numberOfSeats) {
+        Show show = showRepository.findById(showId)
                 .orElseThrow(()->new RuntimeException("Show not found"));
         int bookedSeats = show.getBookings().stream()
                 .filter(booking -> booking.getBookingStatus()!= BookingStatus.CANCELLED)
                 .mapToInt(Booking::getNumberOfSeats)
                 .sum();
         return (show.getTheater().getTheaterCapacity()-bookedSeats)>=numberOfSeats;
+    }
+
+    public  List<Booking> getUserBookings(Long userId) {
+        return bookingRepository.findByUserId(userId);
+    }
+
+    public  List<Booking> getShowBookings(Long showId) {
+        return bookingRepository.findByShowId(showId);
+    }
+
+    public  Booking confirmBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(()->new RuntimeException("Booking not found"));
+        if(booking.getBookingStatus()!=BookingStatus.PENDING){
+            throw new RuntimeException("Booking is not in pending state.");
+        }
+        // PAYMENT PROCESS
+        booking.setBookingStatus(BookingStatus.CONFIRMED);
+        return bookingRepository.save(booking);
+    }
+
+    public  Booking cancelBooking(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(()->new RuntimeException("Booking not found"));
+        validateCancellation(booking);
+        booking.setBookingStatus(BookingStatus.CANCELLED);
+        return bookingRepository.save(booking);
+    }
+
+    private void validateCancellation(Booking booking) {
+        LocalDateTime showTime = booking.getShow().getShowTime();
+        LocalDateTime deadlineTime = showTime.minusHours(2);
+        if(LocalDateTime.now().isAfter(deadlineTime)){
+            throw new RuntimeException("Cannot cancel the booking");
+        }
+        if(booking.getBookingStatus()==BookingStatus.CANCELLED){
+            throw new RuntimeException("Booking Already been cancelled.");
+        }
+    }
+
+    public  List<Booking> getBookingByStatus(BookingStatus bookingStatus) {
+        return bookingRepository.findBookingByStatus(bookingStatus);
     }
 }
