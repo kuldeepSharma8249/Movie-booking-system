@@ -7,5 +7,6 @@ import lombok.Data;
 @Entity
 @Data
 @Table(name="users")
-public class Users {
+public class User {
+    private Long id;
 }

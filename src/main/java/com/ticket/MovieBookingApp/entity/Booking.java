@@ -1,9 +1,7 @@
 package com.ticket.MovieBookingApp.entity;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Data;
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +14,7 @@ public class Booking {
     private Long id;
     private Integer numberOfSeats;
     private LocalDateTime bookingTime;
+    private Double price;
     private BookingStatus bookingStatus;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -24,7 +23,7 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id" , nullable = false)
-    private Users user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "show_id" , nullable = false)
